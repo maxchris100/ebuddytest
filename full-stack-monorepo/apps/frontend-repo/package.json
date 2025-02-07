@@ -1,0 +1,19 @@
+{
+  "name": "frontend-repo",
+  "version": "1.0.0",
+  "main": "app/page.tsx",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "firebase": "^9.6.1",
+    "next": "14.0.0",
+    "react": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "@mui/material": "^5.4.0",
+    "@reduxjs/toolkit": "^1.8.0",
+    "@shared": "workspace:*"
+  }
+}

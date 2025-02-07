@@ -1,0 +1,27 @@
+import { db } from './firebaseConfig';
+import { User } from '@shared/src/user';
+
+const getHighestPotentialUsers = async (lastVisibleDoc: FirebaseFirestore.DocumentSnapshot | null = null) => {
+  const usersRef = db.collection('USERS');
+
+  // Prepare the query to fetch the most potential users
+  let query = usersRef
+    .orderBy('totalAverageWeightRatings', 'desc') // Highest priority: totalAverageWeightRatings
+    .orderBy('numberOfRents', 'desc')           // Second priority: numberOfRents
+    .orderBy('recentlyActive', 'desc');         // Third priority: recentlyActive
+
+  if (lastVisibleDoc) {
+    query = query.startAfter(lastVisibleDoc);
+  }
+
+  const snapshot = await query.limit(10).get(); // Fetch 10 users per page
+
+  const users: User[] = [];
+  snapshot.forEach((doc) => {
+    users.push(doc.data() as User);
+  });
+
+  // Return the users along with the last visible document for pagination
+  const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+  return { users, lastVisibleDoc: lastDoc };
+};
